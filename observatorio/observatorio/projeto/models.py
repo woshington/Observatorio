@@ -23,7 +23,13 @@ class AuditModel(models.Model):
 class Fase(AuditModel):
 	nome = models.CharField('Nome', max_length=255)
 	descricao = models.TextField('Descricao')
-	
+
+	def __str__(self):
+		return self.nome
+
+	def get_absolute_url(self):
+		return reverse('projeto:fase_listar')
+
 	class Meta:
 		verbose_name = 'Fase'
 		verbose_name_plural = 'Fases'
@@ -92,13 +98,11 @@ class Projeto(models.Model):
 		default='0'
 	)
 	 
-	instituicao = GenericRelation('Instituicao')
-
 	def __str__(self):
 		return self.nome
 
 	def get_absolute_url(self):
-		return reverse('projeto:projeto_lista')
+		return reverse('projeto:projeto_listar')
 
 	""" Método deletar o arquivo de cronogrma quando alterado ou excluido """
 	def delete(self):
