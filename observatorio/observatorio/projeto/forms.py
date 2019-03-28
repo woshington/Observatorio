@@ -30,3 +30,10 @@ class InstituicaoForm(forms.ModelForm):
 	class Meta:
 		model = Instituicao
 		fields = ['nome', 'cidade', 'estado']
+
+
+class MembroEquipeForm(forms.ModelForm):
+	
+	class Meta:
+		model = MembroEquipe
+		fields = ['nome', 'funcao']		

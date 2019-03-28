@@ -172,4 +172,72 @@ def instituicao_deletar(request, pk):
 	instituicao = get_object_or_404(Instituicao, pk=pk)
 	instituicao.delete()
 	return redirect('projeto:instituicao_listar')
+
+
+class InstituicaoAutocomplete(autocomplete.Select2QuerySetView):
+	def get_queryset(self):
+		qs = Instituicao.objects.all()
+
+		if self.q:
+			qs = qs.filter(nome__icontains=self.q)
+
+		return qs
+
+
+class MembroEquipeListar(ListView):
+	model = MembroEquipe
+	http_method_names = ['get']
+	template_name = 'membro_equipe/listar.html'
+	context_object_name = 'object_list'
+	paginate_by = 20
+
+	def get_queryset(self):
+		self.queryset = super(MembroEquipeListar, self).get_queryset()
+		if self.request.GET.get('search_box', False):
+			self.queryset=self.queryset.filter(Q(nome__icontains=self.request.GET['search_box']))
+		return self.queryset
+
+	def get_context_data(self, **kwargs):
+		_super = super(MembroEquipeListar, self)
+		context = _super.get_context_data(**kwargs)
+	
+		context.update({
+			})
+		return context
+
+
+class MembroEquipeCriar(CreateView):
+	model = MembroEquipe
+	template_name = 'membro_equipe/add.html'
+	form_class = MembroEquipeForm
+
+
+class MembroEquipeDetalhar(UpdateView):
+	model = MembroEquipe
+	template_name = 'membro_equipe/detalhar.html'
+	form_class = MembroEquipeForm
+
+
+class MembroEquipeAtualizar(UpdateView):
+	model = MembroEquipe
+	template_name = 'membro_equipe/add.html'
+	form_class = MembroEquipeForm
+
+
+def membro_equipe_deletar(request, pk):
+	membroEquipe = get_object_or_404(MembroEquipe, pk=pk)
+	membroEquipe.delete()
+	return redirect('projeto:fase_listar')
+
+
+class MembroEquipeAutocomplete(autocomplete.Select2QuerySetView):
+	def get_queryset(self):
+		qs = MembroEquipe.objects.all()
+
+		if self.q:
+			qs = qs.filter(nome__icontains=self.q)
+
+		return qs
+
+
 		

@@ -28,7 +28,14 @@ urlpatterns = [
 	path('instituicao/editar/<int:pk>/', (InstituicaoAtualizar.as_view()), name='instituicao_editar'),
 	path('instituicao/<int:pk>/deletar/', (instituicao_deletar), name='instituicao_deletar'),
 	path('instituicao/detalhar/<int:pk>/', (InstituicaoDetalhar.as_view()), name='instituicao_detalhar'),
-	# path('instituica/instituicao-autocomplete', (InstituicaoAutocomplete.as_view()), name='instituicao_autocomplete'),
-    
+	path('instituicao/instituicao-autocomplete', (InstituicaoAutocomplete.as_view()), name='instituicao_autocomplete'),
+	
+	# MEMBRO EQUIPE
+	path('membro-equipe/listar/', (MembroEquipeListar.as_view()), name='membro_equipe_listar'),
+	path('membro-equipe/add/', (MembroEquipeCriar.as_view()), name='membro_equipe_add'),
+	path('membro-equipe/editar/<int:pk>/', (MembroEquipeAtualizar.as_view()), name='membro_equipe_editar'),
+	path('membro-equipe/<int:pk>/deletar/', (membro_equipe_deletar), name='membro_equipe_deletar'),
+	path('membro-equipe/detalhar/<int:pk>/', (MembroEquipeDetalhar.as_view()), name='membro_equipe_detalhar'),
+	path('membro-equipe/membro-equipe-autocomplete', (MembroEquipeAutocomplete.as_view()), name='membro_equipe_autocomplete'),    
 	
 ]

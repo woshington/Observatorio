@@ -1,6 +1,6 @@
 {% extends "app/base_site.html" %}
 {% load widget_tweaks %}
-{% block title %} {% if object %}Editar{% else %}Adicionar {% endif %} Instituição {% endblock title %}
+{% block title %} {% if object %}Editar{% else %}Adicionar {% endif %} Membro da Equipe {% endblock title %}
 
 
 {% block content %}
@@ -12,7 +12,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Instituição<small>{% if object %}Editar{% else %}Adicionar {% endif %} </small></h2>
+              <h2>Membro da Equipe<small>{% if object %}Editar{% else %}Adicionar {% endif %} </small></h2>
      
               <div class="clearfix"></div>
             </div>
@@ -47,7 +47,7 @@
                 <div class="ln_solid"></div>
                 <div class="form-group">
                   <div class="col-md-12 col-sm-12 col-xs-12">
-                    <a href="{% url 'projeto:instituicao_listar' %}" class="btn btn-primary pull-right" role="button">Voltar</a>
+                    <a href="{% url 'projeto:membro_equipe_listar' %}" class="btn btn-primary pull-right" role="button">Voltar</a>
                     <button type="submit" class="btn btn-success pull-right">Salvar</button>
                     
                   </div>

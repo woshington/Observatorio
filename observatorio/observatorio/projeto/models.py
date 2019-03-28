@@ -73,6 +73,12 @@ class MembroEquipe(models.Model):
 	nome = models.CharField('Nome', max_length=255)
 	funcao = models.CharField('Função', max_length=255)
 
+	def __str__(self):
+		return self.nome
+
+	def get_absolute_url(self):
+		return reverse('projeto:membro_equipe_listar')	
+
 	class Meta:
 		verbose_name = 'Membro da Equipe'
 		verbose_name_plural = 'Membros da Equipe'
