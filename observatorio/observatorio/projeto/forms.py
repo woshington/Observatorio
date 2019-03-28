@@ -24,3 +24,9 @@ class CicloVidaForm(forms.ModelForm):
 		# 		'fase': autocomplete.ModelSelect2Multiple(url='projeto:fase_autocomplete')
 		# }
 
+
+class InstituicaoForm(forms.ModelForm):
+	
+	class Meta:
+		model = Instituicao
+		fields = ['nome', 'cidade', 'estado']

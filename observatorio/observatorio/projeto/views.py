@@ -125,4 +125,51 @@ class CicloVidaAutocomplete(autocomplete.Select2QuerySetView):
 		if self.q:
 			qs = qs.filter(nome__icontains=self.q)
 
-		return qs		
+		return qs
+
+
+class InstituicaoListar(ListView):
+	model = Instituicao
+	http_method_names = ['get']
+	template_name = 'instituicao/listar.html'
+	context_object_name = 'object_list'
+	paginate_by = 20
+
+	def get_queryset(self):
+		self.queryset = super(InstituicaoListar, self).get_queryset()
+		if self.request.GET.get('search_box', False):
+			self.queryset=self.queryset.filter(Q(nome__icontains=self.request.GET['search_box']))
+		return self.queryset
+
+	def get_context_data(self, **kwargs):
+		_super = super(InstituicaoListar, self)
+		context = _super.get_context_data(**kwargs)
+	
+		context.update({
+			})
+		return context
+
+
+class InstituicaoCriar(CreateView):
+	model = Instituicao
+	template_name = 'instituicao/add.html'
+	form_class = InstituicaoForm
+
+
+class InstituicaoDetalhar(UpdateView):
+	model = Instituicao
+	template_name = 'instituicao/detalhar.html'
+	form_class = InstituicaoForm
+
+
+class InstituicaoAtualizar(UpdateView):
+	model = Instituicao
+	template_name = 'instituicao/add.html'
+	form_class = InstituicaoForm
+
+
+def instituicao_deletar(request, pk):
+	instituicao = get_object_or_404(Instituicao, pk=pk)
+	instituicao.delete()
+	return redirect('projeto:instituicao_listar')
+		

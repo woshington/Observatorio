@@ -1,0 +1,65 @@
+{% extends "app/base_site.html" %}
+{% load widget_tweaks %}
+{% block title %} {% if object %}Editar{% else %}Adicionar {% endif %} Instituiçao {% endblock title %}
+
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Instituição<small>{% if object %}Editar{% else %}Adicionar {% endif %} </small></h2>
+     
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              <form action="." class="form-group" method="post" enctype="multipart/form-data">{% csrf_token %}
+                {% for field in form %}
+                {% if field.errors %}
+                <div class="col-md-12">
+                  
+                    <label class="control-label" >{{ field.label }}</label>
+                    {{ field|add_class:"form-control input-md" }}
+                  
+                    {% for error in field.errors%}
+                      <span class="help-inline error">{{ error}}</span>
+                    {% endfor%}
+                </div>
+
+
+                {%else%}
+                <div class="col-md-12 margin-bottom-15">
+                  
+                    <label class="control-label" >{{ field.label }}</label>
+                    {{ field|add_class:"form-control input-md" }}
+                  
+
+                </div>
+                {%endif%}
+                {% endfor %}
+
+                <div class="clearfix"></div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <a href="{% url 'projeto:instituicao_listar' %}" class="btn btn-primary pull-right" role="button">Voltar</a>
+                    <button type="submit" class="btn btn-success pull-right">Salvar</button>
+                    
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+{% endblock content %}
