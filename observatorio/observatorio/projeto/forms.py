@@ -43,4 +43,4 @@ class ProjetoForm(forms.ModelForm):
 	
 	class Meta:
 		model = Projeto
-		fields = ['nome', 'descricao','instituicao', 'empresa_cliente', 'status','escopo', 'atividades', 'lider_projeto','membros', 'produtos', 'orcamento_previsto', 'orcamento_executado', 'data_inicio', 'data_fim', 'ciclo_vida', 'plano_comunicacao', 'cronograma', 'riscos', 'ferramentas', 'processo_gerenciamento']		
+		fields = ['nome', 'descricao','instituicao', 'empresa_cliente', 'status','escopo', 'atividades', 'lider_projeto','membros', 'produtos', 'orcamento_previsto', 'orcamento_executado', 'data_inicio', 'data_fim', 'ciclo_vida', 'plano_comunicacao', 	'cronograma', 'riscos', 'ferramentas', 'processo_gerenciamento']		

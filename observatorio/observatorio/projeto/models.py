@@ -87,8 +87,8 @@ class MembroEquipe(models.Model):
 
 class Projeto(models.Model):
 	nome = models.CharField('Nome ou Sigla', max_length=255, unique=True)
-	descricao = models.TextField('Descrição', blank=True)
-	instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE, default=False, blank=True)
+	descricao = models.TextField('Descrição')
+	instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE, default=False)
 	empresa_cliente = models.CharField('Empresa Cliente', max_length=255, blank=True)
 	escopo = models.TextField('Escopo', blank=True)
 	atividades = models.TextField('Atividades', blank=True)
@@ -97,8 +97,8 @@ class Projeto(models.Model):
 	produtos = models.TextField('Produtos e/ou serviços entregues', blank=True)
 	orcamento_previsto = models.FloatField('Orçamento previsto', null=True, blank=True, default=None)
 	orcamento_executado = models.FloatField('Orçamento executado', null=True, blank=True, default=None)
-	data_inicio = models.DateTimeField('Data do inicio', blank=True)
-	data_fim = models.DateTimeField('Data do fim', blank=True)
+	data_inicio = models.DateTimeField('Data do inicio')
+	data_fim = models.DateTimeField('Data do fim')
 	ciclo_vida = models.ForeignKey(CicloVida, verbose_name="Ciclo de Vida", on_delete=models.CASCADE, default=False)
 	plano_comunicacao = models.FileField('Plano de comunicacao', upload_to='plano_comunicacao/', blank=True)
 	cronograma = models.FileField('Cronograma', upload_to='cronograma/', blank=True)
@@ -116,8 +116,21 @@ class Projeto(models.Model):
 		'Status',
 		max_length=1,
 		choices=STATUS,
-		default='0'
+		default='2'
 	)
+
+	def por_concluido(self):
+		concluido = Projeto.objects.filter(status='1')
+		print("Eita", ((concluido.count() * 100) / self.count()))
+		return "eita"
+
+	def por_em_andamento(self):
+		em_andamento = Projeto.objects.filter(status='2')
+		return (em_andamento.count * 100) / self.count()
+
+	def por_atrasado(self):
+		atrasado = Projeto.objects.filter(status='2')
+		return (atrasado * 100) / self.count()		
 	 
 	def __str__(self):
 		return self.nome
