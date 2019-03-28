@@ -61,67 +61,284 @@
                 </ul>
                 <br />
 
-                <div id="mainb" style="height:350px;"></div>
+                <!-- <div id="mainb" style="height:350px;"></div> -->
 
-                <div>
+                <!-- MEMBROS DA EQUIPE -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
 
-                  <h4>Recent Activity</h4>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>Membros da Equipe</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                              <!-- <li><a href="{}">Editar</a>
+                              </li> -->
+                              
+                            </ul>
+                          </li>
+                
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                        <ul class="list-unstyled msg_list">
+                          {% for membro in object.membros.all %}
 
-                  <!-- end of user messages -->
-                  <ul class="messages">
-                    <li>
-                      <img src="/static/images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-info">24</h3>
-                        <p class="month">May</p>
+                            <li>
+                              <a>
+                                <span class="image">
+                                  <img src="/static/images/user.png" alt="img" />
+                                </span>
+                                <span>
+                                  <span>{{membro.nome}}</span>
+                                  <!-- <span class="time">3 mins ago</span> -->
+                                </span>
+                                <span class="message">
+                                  {{membro.funcao}}
+                                </span>
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
                       </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Desmond Davison</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="/static/images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-error">21</h3>
-                        <p class="month">May</p>
-                      </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Brian Michaels</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1" aria-hidden="true" data-icon=""></span>
-                          <a href="#" data-original-title="">Download</a>
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="/static/images/img.jpg" class="avatar" alt="Avatar">
-                      <div class="message_date">
-                        <h3 class="date text-info">24</h3>
-                        <p class="month">May</p>
-                      </div>
-                      <div class="message_wrapper">
-                        <h4 class="heading">Desmond Davison</h4>
-                        <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                        <br />
-                        <p class="url">
-                          <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                          <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                        </p>
-                      </div>
-                    </li>
-                  </ul>
-                  <!-- end of user messages -->
+                    </div>  
 
 
                 </div>
+                <!-- FIM - MEMBROS DA EQUIPE -->
+
+                <!-- CICLO DE VIDA -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> {{ object.ciclo_vida }}<small>Ciclo de Vida</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a target="_blank" href="{% url 'projeto:ciclo_vida_detalhar' object.ciclo_vida.id %}">Ver</a>
+                                </li>
+                                <li><a target="_blank" href="{% url 'projeto:ciclo_vida_editar' object.ciclo_vida.id %}">Editar</a>
+                                </li>
+                            </ul>
+                          </li>
+                      
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                    <div class="x_content">
+
+                      <!-- start accordion -->
+                      <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                      {% for membro in object.ciclo_vida.fase.all %}
+                        <div class="panel">
+                          <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{membro.id}}" aria-expanded="false" aria-controls="collapseTwo">
+                            <h4 class="panel-title">{{membro.nome}}</h4>
+                          </a>
+                          <div id="collapseTwo{{membro.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                              <p><strong>{{membro.nome}}</strong>
+                              </p>
+                              {{membro.descricao|linebreaksbr}}
+                            </div>
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <!-- end of accordion -->
+
+           
+                    </div>  
+                  </div>
+
+
+                </div>
+                <!-- FIM - CICLO DE VIDA -->
+
+
+                <!-- ESCOPO -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Escopo</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <!-- start accordion -->
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.escopo|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>
+                      <!-- end of accordion -->
+
+           
+                    </div>  
+                  </div>
+
+
+                </div>
+                <!-- FIM - ESCOPO -->
+
+
+                <!-- ATIVIDADES -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Atividades</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.atividades|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - ATIVIDADES -->
+
+                <!-- PRODUTOS -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Produtos e/ou serviços entregues</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.produtos|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - PRODUTOS -->
+
+
+                <!-- RISCOS -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Riscos</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.riscos|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - RISCOS -->
+
+                <!-- FERRAMENTAS -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Ferramentas</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.ferramentas|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - FERRAMENTAS --> 
+
+                <!-- Processo de gerenciamento -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Processo de gerenciamento</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.processo_gerenciamento|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - Processo de gerenciamento -->                                
+
 
 
               </div>
@@ -157,18 +374,42 @@
                     
                     <br />
                     </ul>
-                    <h5>Arquivos do Projeto</h5>
+                    <h5><strong>Arquivos do Projeto</strong></h5>
                     <ul class="list-unstyled project_files">
-                      <li><a href="">{% if object.cronograma %}
+       <!--                <li><a href="">{% if object.cronograma %}
                         cronograma<a href="/media/{{object.cronograma}}" target="_blank">
                           <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>                        
                         </a>
 
                         {% endif %}</a>                
                       </li>
+ -->
+
+                      {% if object.cronograma %}
+                      <li>cronograma
+                        <a href="/media/{{object.cronograma}}"target="_blank">
+                          <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      {% endif %}
+                      {% if object.plano_comunicacao %}
+                      <li>plano_de_comunicacao
+                        <a href="/media/{{object.plano_comunicacao}}"target="_blank">
+                          <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      {% endif %}                      
                
                     </ul>                    
                     <br />
+                    <h5><strong>Orçamento</strong></h5>
+                    <ul class="list-unstyled project_files">
+                      <li>Previsto: {{ object.orcamento_previsto|floatformat:2 }} R$</li>
+                      <li>Executado: {{ object.orcamento_executado|floatformat:2 }} R$</li>
+                    
+                    <br />
+                    </ul>                  
+                    <br />                    
 
                     <div class="text-center mtop20">
                       <a href="#" class="btn btn-sm btn-primary">Add files</a>
