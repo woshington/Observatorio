@@ -268,10 +268,14 @@ class ProjetoCriar(CreateView):
 	form_class = ProjetoForm
 
 
-class ProjetoDetalhar(UpdateView):
+# class ProjetoDetalhar(UpdateView):
+# 	model = Projeto
+# 	template_name = 'projeto/detalhar.html'
+# 	form_class = ProjetoForm
+
+class ProjetoDetalhar(DetailView):
 	model = Projeto
-	template_name = 'projeto/detalhar.html'
-	form_class = ProjetoForm
+	template_name = 'projeto/detalhar2.html'
 
 
 class ProjetoAtualizar(UpdateView):

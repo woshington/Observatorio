@@ -48,9 +48,8 @@
             </div>
             <div id="listItems" class="x_content">
 
-              <!-- <p>Simple table with project listing with progress and editing options</p> -->
+              {% if object_list.count > 0 %}
 
-              <!-- start project list -->
               <table class="table table-striped projects">
                 <thead>
                   <tr>
@@ -87,6 +86,10 @@
                 {% endfor %}  
                 </tbody>
               </table>
+              {% else %}
+              Sem itens na lista
+
+              {% endif %} 
               
 
             </div>
