@@ -240,4 +240,60 @@ class MembroEquipeAutocomplete(autocomplete.Select2QuerySetView):
 		return qs
 
 
+class ProjetoListar(ListView):
+	model = Projeto
+	http_method_names = ['get']
+	template_name = 'projeto/listar.html'
+	context_object_name = 'object_list'
+	paginate_by = 20
+
+	def get_queryset(self):
+		self.queryset = super(ProjetoListar, self).get_queryset()
+		if self.request.GET.get('search_box', False):
+			self.queryset=self.queryset.filter(Q(nome__icontains=self.request.GET['search_box']))
+		return self.queryset
+
+	def get_context_data(self, **kwargs):
+		_super = super(ProjetoListar, self)
+		context = _super.get_context_data(**kwargs)
+	
+		context.update({
+			})
+		return context
+
+
+class ProjetoCriar(CreateView):
+	model = Projeto
+	template_name = 'projeto/add.html'
+	form_class = ProjetoForm
+
+
+class ProjetoDetalhar(UpdateView):
+	model = Projeto
+	template_name = 'projeto/detalhar.html'
+	form_class = ProjetoForm
+
+
+class ProjetoAtualizar(UpdateView):
+	model = Projeto
+	template_name = 'projeto/add.html'
+	form_class = ProjetoForm
+
+
+def projeto_deletar(request, pk):
+	projeto = get_object_or_404(Projeto, pk=pk)
+	projeto.delete()
+	return redirect('projeto:fase_listar')
+
+
+class ProjetoAutocomplete(autocomplete.Select2QuerySetView):
+	def get_queryset(self):
+		qs = Projeto.objects.all()
+
+		if self.q:
+			qs = qs.filter(nome__icontains=self.q)
+
+		return qs
+
+
 		

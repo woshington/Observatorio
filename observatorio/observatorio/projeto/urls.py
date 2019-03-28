@@ -37,5 +37,13 @@ urlpatterns = [
 	path('membro-equipe/<int:pk>/deletar/', (membro_equipe_deletar), name='membro_equipe_deletar'),
 	path('membro-equipe/detalhar/<int:pk>/', (MembroEquipeDetalhar.as_view()), name='membro_equipe_detalhar'),
 	path('membro-equipe/membro-equipe-autocomplete', (MembroEquipeAutocomplete.as_view()), name='membro_equipe_autocomplete'),    
-	
+
+	# PROJETO
+	path('listar/', (ProjetoListar.as_view()), name='projeto_listar'),
+	path('add/', (ProjetoCriar.as_view()), name='projeto_add'),
+	path('editar/<int:pk>/', (ProjetoAtualizar.as_view()), name='projeto_editar'),
+	path('<int:pk>/deletar/', (projeto_deletar), name='projeto_deletar'),
+	path('detalhar/<int:pk>/', (ProjetoDetalhar.as_view()), name='projeto_detalhar'),
+	path('projeto-autocomplete', (ProjetoAutocomplete.as_view()), name='projeto_autocomplete'),    
+		
 ]

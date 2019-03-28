@@ -86,7 +86,7 @@ class MembroEquipe(models.Model):
 
 
 class Projeto(models.Model):
-	nome = models.CharField('Nome ou Sigla', max_length=255, unique=True, default=False)
+	nome = models.CharField('Nome ou Sigla', max_length=255, unique=True)
 	instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE, default=False)
 	escopo = models.TextField('Escopo')
 	atividades = models.TextField('Atividades')

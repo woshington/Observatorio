@@ -1,0 +1,104 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Lista de Projetos {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Projetos <small>Lista</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+           <form class="form-horizontal" action="." method="get">
+            <div class="input-group">
+              <input id="search_box" nome="search_box" type="text" class="form-control" placeholder="Pesquisar por nome..." value="{{ request.GET.search_box }}">
+              <span class="input-group-btn">
+                <button class="btn btn-default form-control" type="submit">Ir</button>
+              </span>
+            </div>
+           </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Projetos</h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <!-- <li><a href="" class="collapse-link btn btn-dark btn-xs"><i class="fa fa-plus"><b> Add</b></i></a> -->
+
+                  <a href="{% url 'projeto:projeto_add' %}">
+                    <button type="button" class="collapse-link btn btn-primary btn-circle btn-xs btn-raised pull-right" style="margin-right: 20px" data-toggle="tooltip" data-placement="top" title="Adicionar"><i class="fa fa-plus fa-lg"></i></button>
+                  </a>
+                            
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div id="listItems" class="x_content">
+
+              <!-- <p>Simple table with project listing with progress and editing options</p> -->
+
+              <!-- start project list -->
+              <table class="table table-striped projects">
+                <thead>
+                  <tr>
+                    <th style="width: 1%">#</th>
+                    <th style="width: 60%">Nome</th>
+                    <th style="width: 20%">#Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                  <tr>
+                    <td>{{object.id}}</td>
+                    <td>
+                      
+                      {% if object.nome %} {{object.nome}} {% else %} - {% endif %}
+                      
+                    </td>
+
+   
+                    <td>
+                      <div class="cent">
+                        <a href="{% url 'projeto:projeto_detalhar' object.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Ver </a>
+                        <a href="{% url 'projeto:projeto_editar' object.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>   
+                       <a href="{% url 'projeto:projeto_deletar' object.id %}" class="btn btn-danger btn-xs">
+                          <i class="fa fa-trash-o">Deletar</i>
+                        </a>
+                        
+                      </div>
+                      
+
+                    </td>
+                  </tr>
+
+                {% endfor %}  
+                </tbody>
+              </table>
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
