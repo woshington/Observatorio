@@ -17,7 +17,6 @@ from django.contrib import messages
 
 
 class FaseListar(ListView):
-
 	model = Fase
 	http_method_names = ['get']
 	template_name = 'fase/listar.html'
@@ -58,6 +57,72 @@ class FaseAtualizar(UpdateView):
 
 
 def fase_deletar(request, pk):
-	fase = get_object_or_404(Fase,pk=pk)
+	fase = get_object_or_404(Fase, pk=pk)
 	fase.delete()
 	return redirect('projeto:fase_listar')
+
+
+class FaseAutocomplete(autocomplete.Select2QuerySetView):
+	def get_queryset(self):
+		qs = Fase.objects.all()
+
+		if self.q:
+			qs = qs.filter(nome__icontains=self.q)
+
+		return qs
+
+
+class CicloVidaListar(ListView):
+	model = CicloVida
+	http_method_names = ['get']
+	template_name = 'ciclo_vida/listar.html'
+	context_object_name = 'object_list'
+	paginate_by = 20
+
+	def get_queryset(self):
+		self.queryset = super(CicloVidaListar, self).get_queryset()
+		if self.request.GET.get('search_box', False):
+			self.queryset=self.queryset.filter(Q(nome__icontains=self.request.GET['search_box']))
+		return self.queryset
+
+	def get_context_data(self, **kwargs):
+		_super = super(CicloVidaListar, self)
+		context = _super.get_context_data(**kwargs)
+	
+		context.update({
+			})
+		return context
+
+
+class CicloVidaCriar(CreateView):
+	model = CicloVida
+	template_name = 'ciclo_vida/add.html'
+	form_class = CicloVidaForm
+
+
+class CicloVidaDetalhar(UpdateView):
+	model = CicloVida
+	template_name = 'ciclo_vida/detalhar.html'
+	form_class = CicloVidaForm
+
+
+class CicloVidaAtualizar(UpdateView):
+	model = CicloVida
+	template_name = 'ciclo_vida/add.html'
+	form_class = CicloVidaForm
+
+
+def ciclo_vida_deletar(request, pk):
+	ciclo_vida = get_object_or_404(CicloVida, pk=pk)
+	ciclo_vida.delete()
+	return redirect('projeto:ciclo_vida_listar')
+
+
+class CicloVidaAutocomplete(autocomplete.Select2QuerySetView):
+	def get_queryset(self):
+		qs = CicloVida.objects.all()
+
+		if self.q:
+			qs = qs.filter(nome__icontains=self.q)
+
+		return qs		

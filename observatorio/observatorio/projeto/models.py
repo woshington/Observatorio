@@ -40,6 +40,12 @@ class CicloVida(AuditModel):
 	nome = models.CharField('Nome', max_length=255)
 	fase = models.ManyToManyField(Fase,verbose_name='Fases', blank=True)
 
+	def __str__(self):
+		return self.nome
+
+	def get_absolute_url(self):
+		return reverse('projeto:ciclo_vida_listar')
+
 	class Meta:
 		verbose_name = 'Ciclo de Vida'
 		verbose_name_plural = 'Ciclos de Vida'

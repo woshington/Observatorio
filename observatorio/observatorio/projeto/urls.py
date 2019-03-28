@@ -12,9 +12,15 @@ urlpatterns = [
 	path('ciclo-de-vida/fase/editar/<int:pk>/', (FaseAtualizar.as_view()), name='fase_editar'),
 	path('ciclo-de-vida/fase/<int:pk>/deletar/', (fase_deletar), name='fase_deletar'),
 	path('ciclo-de-vida/fase/detalhar/<int:pk>/', (FaseDetalhar.as_view()), name='fase_detalhar'),
-	# path('ciclo-de-vida/fase/projeto-autocomplete', ion=True)(ProjetoAutocomplete.as_view()), name='fase_autocomplete'),
+	path('ciclo-de-vida/fase/projeto-autocomplete', (FaseAutocomplete.as_view()), name='fase_autocomplete'),
 
-	
+	# CICLO DE VIDA	
+	path('ciclo-de-vida/listar/', (CicloVidaListar.as_view()), name='ciclo_vida_listar'),
+	path('ciclo-de-vida/add/', (CicloVidaCriar.as_view()), name='ciclo_vida_add'),
+	path('ciclo-de-vida/editar/<int:pk>/', (CicloVidaAtualizar.as_view()), name='ciclo_vida_editar'),
+	path('ciclo-de-vida/<int:pk>/deletar/', (ciclo_vida_deletar), name='ciclo_vida_deletar'),
+	path('ciclo-de-vida/detalhar/<int:pk>/', (CicloVidaDetalhar.as_view()), name='ciclo_vida_detalhar'),
+	path('ciclo-de-vida/projeto-autocomplete', (CicloVidaAutocomplete.as_view()), name='ciclo_vida_autocomplete'),
     
 	# SEASON
 	# path('listar/', (ProjetoList.as_view()), name='projeto_listar'),
