@@ -12,7 +12,10 @@ class Dashboard(TemplateView):
 		projeto = Projeto.objects.all()
 		concluido = Projeto.objects.filter(status='1')
 		em_andamento = Projeto.objects.filter(status='2')
-		atrasado = Projeto.objects.filter(status='3')	
+		atrasado = Projeto.objects.filter(status='3')
+
+		orcamento_pre = Projeto.objects.all().order_by('-orcamento_previsto')[:5]		
+		orcamento_exe = Projeto.objects.all().order_by('-orcamento_executado')[:5]
 
 		
 		por_concluido = (concluido.count() * 100) / projeto.count()
@@ -26,6 +29,8 @@ class Dashboard(TemplateView):
 			'atrasado': atrasado,
 			'por_concluido': por_concluido,
 			'por_em_andamento': por_em_andamento,
-			'por_atrasado': por_atrasado
+			'por_atrasado': por_atrasado,
+			'orcamento_pre': orcamento_pre,
+			'orcamento_exe': orcamento_exe,
 			})
 		return context
