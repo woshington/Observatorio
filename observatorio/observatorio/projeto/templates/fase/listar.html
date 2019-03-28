@@ -13,12 +13,11 @@
         <div class="title_left">
           <h3>Fases <small>Lista</small></h3>
         </div>
-
         <div class="title_right">
           <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
            <form class="form-horizontal" action="." method="get">
             <div class="input-group">
-              <input id="search_box" nome="search_box" type="text" class="form-control" placeholder="Pesquisar por nome..." value="{{ request.GET.search_box }}">
+              <input id="search_box" name="search_box" type="text" class="form-control" placeholder="Pesquisar por nome..." value="{{ request.GET.search_box }}">
               <span class="input-group-btn">
                 <button class="btn btn-default form-control" type="submit">Ir</button>
               </span>
