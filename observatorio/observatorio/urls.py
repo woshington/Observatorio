@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include('observatorio.app.urls', namespace='app')),
     path('projeto/', include('observatorio.projeto.urls', namespace='projeto')),
+    path('consultas/', include('observatorio.consultas.urls', namespace='consultas')),
 ]
 # Servindo arquivos static em modo DEBUG=True
 if settings.DEBUG:

@@ -3,44 +3,59 @@ from django.forms.utils import ErrorList
 from django import forms
 from dal import autocomplete
 from datetime import datetime
+from django.forms import inlineformset_factory
 
 
-class FaseForm(forms.ModelForm):
-	
-	class Meta:
-		model = Fase
-		fields = ['nome', 'descricao']
 
 
-class CicloVidaForm(forms.ModelForm):
-	# fase = forms.ModelMultipleChoiceField(
-	# 	queryset=Fase.objects.all(),
-	# 	label="Fases",
-	# 	widget=autocomplete.ModelSelect2Multiple(url='projeto:fase_autocomplete'))
-	class Meta:
-		model = CicloVida
-		fields = ['nome', 'fase']
-		# widgets = {
-		# 		'fase': autocomplete.ModelSelect2Multiple(url='projeto:fase_autocomplete')
-		# }
+# class CicloVidaForm(forms.ModelForm):
+
+# 	class Meta:
+# 		model = CicloVida
+# 		fields = ['nome_ciclo', 'fase']
 
 
 class InstituicaoForm(forms.ModelForm):
 	
 	class Meta:
 		model = Instituicao
-		fields = ['nome', 'cidade', 'estado']
+		fields = ['nome_instituicao', 'cidade', 'estado']
 
 
-class MembroEquipeForm(forms.ModelForm):
+class ProjetoUpdateForm(forms.ModelForm):
 	
 	class Meta:
-		model = MembroEquipe
-		fields = ['nome', 'funcao']
+		model = Projeto
+		fields = ['nome', 'descricao', 'escopo', 'empresa_cliente', 'status', 'lider_projeto', 'orcamento_previsto', 'orcamento_executado', 'data_inicio', 'data_fim', 'plano_comunicacao', 'cronograma', 'atividades', 'produtos', 'riscos', 'ferramentas', 'processo_gerenciamento']
 
 
 class ProjetoForm(forms.ModelForm):
 	
 	class Meta:
 		model = Projeto
-		fields = ['nome', 'descricao','instituicao', 'empresa_cliente', 'status','escopo', 'atividades', 'lider_projeto','membros', 'produtos', 'orcamento_previsto', 'orcamento_executado', 'data_inicio', 'data_fim', 'ciclo_vida', 'plano_comunicacao', 	'cronograma', 'riscos', 'ferramentas', 'processo_gerenciamento']		
+		fields = ['nome', 'descricao', 'escopo', 'empresa_cliente', 'status', 'lider_projeto', 'orcamento_previsto', 'orcamento_executado', 'data_inicio', 'data_fim', 'plano_comunicacao', 'cronograma', 'atividades', 'produtos', 'riscos', 'ferramentas', 'processo_gerenciamento']
+
+
+class MembroForm(forms.ModelForm):
+	
+	class Meta:
+		model = Membro
+
+		fields = ('nome_membro', 'funcao')
+
+		widgets = {
+			'nome_membro': forms.TextInput(attrs={'class': 'formset-field'}),
+			'funcao': forms.TextInput(attrs={'class': 'formset-field', 'style': 'width: 128px;'})
+		}
+
+
+class FaseForm(forms.ModelForm):
+	
+	class Meta:
+		model = Fase
+		fields = ['nome_fase', 'descricao']
+
+		widgets = {
+			'nome_fase': forms.TextInput(attrs={'class': 'formset-field'}),
+			'descricao': forms.Textarea(attrs={'class': 'formset-field'})
+		}

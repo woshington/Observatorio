@@ -38,14 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',    
     # third-party applications
     'easy_thumbnails',
     'widget_tweaks',
     #My APP
     'observatorio.app',
+    'observatorio.consultas',
     'observatorio.projeto',
-    'django_extensions'    
+    'django_extensions',
+    
+
 ]
 
 MIDDLEWARE = [

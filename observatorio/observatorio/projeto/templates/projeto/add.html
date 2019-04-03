@@ -12,36 +12,128 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Projeto<small>{% if object %}Editar{% else %}Adicionar {% endif %} </small></h2>
+              <!-- <h2>Projeto<small>Adicionar</small></h2> -->
      
-              <div class="clearfix"></div>
+              <!-- <div class="clearfix"></div> -->
             </div>
             <div class="x_content">
               <br />
               <form action="." class="form-group" method="post" enctype="multipart/form-data">{% csrf_token %}
-                {% for field in form %}
-                {% if field.errors %}
-                <div class="col-md-12">
-                  
-                    <label class="control-label" >{{ field.label }}</label>
-                    {{ field|add_class:"form-control input-md" }}
-                  
-                    {% for error in field.errors%}
-                      <span class="help-inline error">{{ error}}</span>
-                    {% endfor%}
-                </div>
+                
+                <!-- descrição projeto -->
+                <fieldset>
+                    <legend>Descrição do projeto</legend>
+                      {% for field in form %}
+                      {% if field.errors %}
+                      <div class="col-md-{% if field.name in 'nome\descricao\escopo' %}12{% elif field.name in 'empresa_cliente\status\lider_projeto' %}3{% elif field.name in 'orcamento_previsto\orcamento_executado' %}6{% else %}6{% endif %} margin-bottom-15 has-error has-feedback">
+                        
+                          <label class="control-label" >{{ field.label }}</label>
+                          {{ field|add_class:"form-control input-md" }}
+                        
+                          {% for error in field.errors%}
+                            <span class="help-inline error">{{ error}}</span>
+                          {% endfor%}
+                      </div>
 
 
-                {%else%}
-                <div class="col-md-12 margin-bottom-15">
-                  
-                    <label class="control-label" >{{ field.label }}</label>
-                    {{ field|add_class:"form-control input-md" }}
-                  
+                      {%else%}
+                      <div class="col-md-{% if field.name in 'nome\descricao\escopo\atividades\produtos\riscos\ferramentas\processo_gerenciamento' %}12{% elif field.name in 'empresa_cliente\status\lider_projeto' %}4{% elif field.name in 'orcamento_previsto\orcamento_executado' %}6{% else %}6{% endif %} margin-bottom-15">
+                        
+                          <label class="control-label" >{{ field.label }}</label>
+                          {{ field|add_class:"form-control input-md" }}
+                        
 
-                </div>
-                {%endif%}
-                {% endfor %}
+                      </div>
+                      {%endif%}
+                      {% endfor %}
+                   
+                </fieldset>
+                <!-- fim - descrição projeto -->
+                <div class="clearfix"></div><div class="ln_solid"></div>
+
+                <!-- instituição -->
+                <fieldset>
+                  <legend>Dados da instituição/unidade executora</legend>
+
+
+                    {% for field in instituicao_form %}
+                    {% if field.errors %}
+                    <div class="col-md-{% if field.name in 'nome_instituicao' %}12{% else %}6{% endif %} margin-bottom-15 has-error has-feedback">
+                      
+                        <label class="control-label" >{{ field.label }}</label>
+                        {{ field|add_class:"form-control input-md" }}
+                      
+                        {% for error in field.errors%}
+                          <span class="help-inline error">{{ error}}</span>
+                        {% endfor%}
+                    </div>
+
+
+                    {%else%}
+                    <div class="col-md-{% if field.name in 'nome_instituicao' %}12{% else %}6{% endif %} margin-bottom-15">
+                      
+                        <label class="control-label" >{{ field.label }}</label>
+                        {{ field|add_class:"form-control input-md" }}
+                      
+
+                    </div>
+                    {%endif%}
+                    {% endfor %}
+
+                </fieldset>
+                <!-- fim - instituição -->
+
+                 <div class="clearfix"></div><div class="ln_solid"></div>
+
+                 <!-- membro -->
+                <fieldset>
+                  <legend>Membros da equipe</legend>
+                    <!--     <table class="table form-table table-default table-sm">
+                            <thead class="text-center">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Função</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody> -->
+                            {% for form_data in formset %}
+                              {% for field in form_data %}
+                                <div class="item col-md-5">
+                                  
+                          
+                                    <label class="control-label" >{{ field.label }}</label>
+                                    {{ field|add_class:"form-control input-md" }}
+                                  
+
+                                </div>
+                              {% endfor %}
+                              <div class="col-md-2">
+                                <button type="button" class="btn btn-danger btn-sm remove-form-row"
+                                        id="{{ formset.prefix }}">
+                                  
+                                    Delete
+                                </button>
+                              </div>
+                         
+                            {% endfor %}
+                              <dir class="col-md-12">
+                                <button type="button" class="btn btn-sm btn-success add-form-row"
+                                            id="{{ formset.prefix }}">
+                                       Add
+                                    </button>
+                              
+
+                              </dir>
+                                    
+               
+                            {{ formset.management_form }}            
+                </fieldset>   
+                <!-- fim - membro -->                           
+
+
+
+                 <div class="clearfix"></div><div class="ln_solid"></div>
 
                 <div class="clearfix"></div>
                 <div class="ln_solid"></div>
@@ -63,3 +155,11 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script src="/static/my_archives/formset.js"></script>
+
+
+{% endblock javascripts %}

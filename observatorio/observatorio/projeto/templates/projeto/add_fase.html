@@ -1,0 +1,102 @@
+{% extends "app/base_site.html" %}
+{% load widget_tweaks %}
+{% block title %} {% if object %}Editar{% else %}Adicionar {% endif %} Projeto {% endblock title %}
+
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <!-- <h2>Projeto<small>Adicionar</small></h2> -->
+     
+              <!-- <div class="clearfix"></div> -->
+            </div>
+            <div class="x_content">
+              <br />
+              <form action="." class="form-group" method="post" enctype="multipart/form-data">{% csrf_token %}
+                
+
+
+                 <div class="clearfix"></div><div class="ln_solid"></div>
+
+                 <!-- ciclos de vida -->
+                <fieldset>
+                  <legend>Ciclo de Vidas</legend>
+                        <table class="table form-table table-default table-sm">
+                            <thead class="text-center">
+                            <tr>
+                                <th style="width: 10%">Nome</th>
+                                <th style="width: 80%">Descrição</th>
+                                <th style="width: 10%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for form_data in formset %}
+                                <tr class="item">
+                                    <td>
+                                        {{ form_data.nome_fase }}
+                                    </td>
+                                    <td>
+                                        {{ form_data.descricao }}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm remove-form-row"
+                                                id="{{ formset.prefix }}">
+                                          
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="9"
+                                    style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+                                    <button type="button" class="btn btn-sm btn-success add-form-row"
+                                            id="{{ formset.prefix }}">
+                                       Add
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        {{ formset.management_form }}            
+                </fieldset>   
+                <!-- fim - ciclos de vida -->                           
+
+
+
+                 <div class="clearfix"></div><div class="ln_solid"></div>
+
+                <div class="clearfix"></div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <a href="{% url 'projeto:projeto_listar' %}" class="btn btn-primary pull-right" role="button">Voltar</a>
+                    <button type="submit" class="btn btn-success pull-right">Salvar</button>
+                    
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script src="/static/my_archives/formset.js"></script>
+
+
+{% endblock javascripts %}

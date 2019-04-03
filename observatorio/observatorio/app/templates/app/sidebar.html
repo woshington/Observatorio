@@ -27,21 +27,25 @@
       <ul class="nav side-menu">
         <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="{% url 'app:dashboard' %}">Dashboard</a></li><!-- 
             <li><a href="index2.html">Dashboard2</a></li>
-            <li><a href="index3.html">Dashboard3</a></li>
+            <li><a href="index3.html">Dashboard3</a></li> -->
           </ul>
         </li>
         <li><a><i class="fa fa-edit"></i> Projetos <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu">
-            <li><a href="{% url 'projeto:fase_listar' %}">Fases</a></li>
-            <li><a href="{% url 'projeto:ciclo_vida_listar' %}">Ciclos de Vida</a></li>
             <li><a href="{% url 'projeto:instituicao_listar' %}">Instituições</a></li>
-            <li><a href="{% url 'projeto:membro_equipe_listar' %}">Membros da Equipe</a></li>
+            <li><a href="{% url 'projeto:membro_equipe_listar' %}">Membro</a></li>
             <li><a href="{% url 'projeto:projeto_listar' %}">Projetos</a></li>
           </ul>
         </li>
 
+
+        <li><a><i class="fa fa-search"></i> Consultas <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'consultas:orcamento_maior_que' %}">Orçamento maior que</a></li>
+          </ul>
+        </li>
        
 
       </ul>

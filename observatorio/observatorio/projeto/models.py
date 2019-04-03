@@ -20,45 +20,13 @@ class AuditModel(models.Model):
 		abstract=True
 
 
-class Fase(AuditModel):
-	nome = models.CharField('Nome', max_length=255)
-	descricao = models.TextField('Descricao')
-
-	def __str__(self):
-		return self.nome
-
-	def get_absolute_url(self):
-		return reverse('projeto:fase_listar')
-
-	class Meta:
-		verbose_name = 'Fase'
-		verbose_name_plural = 'Fases'
-		ordering = ['id']	
-
-
-class CicloVida(AuditModel):
-	nome = models.CharField('Nome', max_length=255)
-	fase = models.ManyToManyField(Fase,verbose_name='Fases', blank=True)
-
-	def __str__(self):
-		return self.nome
-
-	def get_absolute_url(self):
-		return reverse('projeto:ciclo_vida_listar')
-
-	class Meta:
-		verbose_name = 'Ciclo de Vida'
-		verbose_name_plural = 'Ciclos de Vida'
-		ordering = ['nome']	
-
-
 class Instituicao(models.Model):
-	nome = models.CharField('Instituição', max_length=255, unique=True)
+	nome_instituicao = models.CharField('Instituição', max_length=255, unique=True)
 	cidade = models.CharField('Cidade', max_length=255, blank=True, null=True)
 	estado = models.CharField('UF', max_length=2, blank=True, null=True)
 
 	def __str__(self):
-		return self.nome
+		return self.nome_instituicao
 
 	def get_absolute_url(self):
 		return reverse('projeto:instituicao_listar')
@@ -66,40 +34,22 @@ class Instituicao(models.Model):
 	class Meta:
 		verbose_name = 'Instituição'
 		verbose_name_plural = 'Instituições'
-		ordering = ['nome']
-
-
-class MembroEquipe(models.Model):
-	nome = models.CharField('Nome', max_length=255)
-	funcao = models.CharField('Função', max_length=255)
-
-	def __str__(self):
-		return self.nome
-
-	def get_absolute_url(self):
-		return reverse('projeto:membro_equipe_listar')	
-
-	class Meta:
-		verbose_name = 'Membro da Equipe'
-		verbose_name_plural = 'Membros da Equipe'
-		ordering = ['nome']
+		ordering = ['nome_instituicao']
 
 
 class Projeto(models.Model):
 	nome = models.CharField('Nome ou Sigla', max_length=255, unique=True)
 	descricao = models.TextField('Descrição')
-	instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE, default=False)
+	instituicao = models.ForeignKey(Instituicao, on_delete=models.CASCADE, null=True, blank=True)
 	empresa_cliente = models.CharField('Empresa Cliente', max_length=255, blank=True)
 	escopo = models.TextField('Escopo', blank=True)
 	atividades = models.TextField('Atividades', blank=True)
 	lider_projeto = models.CharField('Líder do Projeto', max_length=255, blank=True)
-	membros = models.ManyToManyField(MembroEquipe,verbose_name='Membros', blank=True)
 	produtos = models.TextField('Produtos e/ou serviços entregues', blank=True)
 	orcamento_previsto = models.FloatField('Orçamento previsto', null=True, blank=True, default=None)
 	orcamento_executado = models.FloatField('Orçamento executado', null=True, blank=True, default=None)
 	data_inicio = models.DateTimeField('Data do inicio')
 	data_fim = models.DateTimeField('Data do fim')
-	ciclo_vida = models.ForeignKey(CicloVida, verbose_name="Ciclo de Vida", on_delete=models.CASCADE, default=False)
 	plano_comunicacao = models.FileField('Plano de comunicacao', upload_to='plano_comunicacao/', blank=True)
 	cronograma = models.FileField('Cronograma', upload_to='cronograma/', blank=True)
 	riscos = models.TextField('Riscos', blank=True)
@@ -149,7 +99,32 @@ class Projeto(models.Model):
 		ordering = ['nome']
 
 
+class Membro(models.Model):
+	nome_membro = models.CharField('Nome', max_length=255)
+	funcao = models.CharField('Função', max_length=255)
+	projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE)
+
+	def get_absolute_url(self):
+		return reverse('projeto:membro_equipe_listar')
+
+	class Meta:
+		verbose_name = 'Membro'
+		verbose_name_plural = 'Membros'
+		ordering = ['nome_membro']
 
 
+class Fase(models.Model):
+	nome_fase = models.CharField('Nome', max_length=255)
+	descricao = models.TextField('Descricao')
+	projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE)
 
-						
+	def __str__(self):
+		return self.nome_fase
+
+	def get_absolute_url(self):
+		return reverse('projeto:fase_listar')
+
+	class Meta:
+		verbose_name = 'Fase'
+		verbose_name_plural = 'Fases'
+		ordering = ['id']

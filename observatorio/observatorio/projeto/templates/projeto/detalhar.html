@@ -1,49 +1,421 @@
 {% extends "app/base_site.html" %}
-{% load widget_tweaks %}
-{% block title %} Detalhes do Projeto  {% endblock title %}
 
+{% block title %} Detalhe do Projeto {% endblock title %}
+
+{% block sidebar_class %}menu_fixed{% endblock sidebar_class %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
 
 {% block content %}
   <div class="right_col" role="main">
     <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Detalhe do Projeto <!-- <small> design</small> --></h3>
+        </div>
+
+       
+      </div>
 
       <div class="clearfix"></div>
+
       <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-12">
           <div class="x_panel">
             <div class="x_title">
-              <h2>Projeto<small>Detalhes </small></h2>
-     
+              <h2>{{ object.nome }}</h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% url 'projeto:projeto_editar' object.id %}">Editar</a>
+                    </li>
+                  </ul>
+                </li>
+       
+              </ul>
               <div class="clearfix"></div>
             </div>
+
             <div class="x_content">
-              <br />
-              <form action="." class="form-group" method="post" enctype="multipart/form-data">{% csrf_token %}
-                {% for field in form %}
+
+              <div class="col-md-9 col-sm-9 col-xs-12">
+
+                <ul class="stats-overview">
+                  <li>
+                    <span class="name"> Status </span>
+                    <span class="value text-success">{{object.get_status_display}}</span>
+                  </li>
+                  <li>
+                    <span class="name"> Data de Início </span>
+                    <span class="value text-success"> {{object.data_inicio|date:"d/M/Y"}} </span>
+                  </li>
+                  <li class="hidden-phone">
+                    <span class="name"> Data de Fim </span>
+                    <span class="value text-success"> {{object.data_fim|date:"d/M/Y" }} </span>
+                  </li>
+                </ul>
+                <br />
+
+                <!-- <div id="mainb" style="height:350px;"></div> -->
+
+                <!-- MEMBROS DA EQUIPE -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>Membros da Equipe</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                              <!-- <li><a href="{}">Editar</a>
+                              </li> -->
+                              
+                            </ul>
+                          </li>
                 
-                  <div class="col-md-12 margin-bottom-15">                  
-                      <label class="control-label" >{{ field.label }}</label>
-                      {{ field|add_class:"form-control input-md"|attr:"disabled:true" }}
-                  
-                  </div>
-                {% endfor %}
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+                        <ul class="list-unstyled msg_list">
+                          {% for membro in membros %}
 
-                <div class="clearfix"></div>
-                <div class="ln_solid"></div>
-                <div class="form-group">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <a href="{% url 'projeto:projeto_listar' %}" class="btn btn-primary pull-right" role="button">Voltar</a>
-                    
-                  </div>
+                            <li>
+                              <a>
+                                <span class="image">
+                                  <img src="/static/images/user.png" alt="img" />
+                                </span>
+                                <span>
+                                  <span><strong>{{membro.nome_membro}}</strong></span>
+                                  <!-- <span class="time">3 mins ago</span> -->
+                                </span>
+                                <span class="message">
+                                  {{membro.funcao}}
+                                </span>
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>  
+
+
                 </div>
+                <!-- FIM - MEMBROS DA EQUIPE -->
 
-              </form>
+                <!-- ESCOPO -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Escopo</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <!-- start accordion -->
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.escopo|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>
+                      <!-- end of accordion -->
+
+           
+                    </div>  
+                  </div>
+
+
+                </div>
+                <!-- FIM - ESCOPO -->
+
+
+                <!-- ATIVIDADES -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Atividades</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.atividades|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - ATIVIDADES -->
+
+                <!-- PRODUTOS -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Produtos e/ou serviços entregues</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.produtos|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - PRODUTOS -->
+
+
+                <!-- RISCOS -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Riscos</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.riscos|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - RISCOS -->
+
+                <!-- FERRAMENTAS -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Ferramentas</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.ferramentas|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - FERRAMENTAS --> 
+
+                <!-- Processo de gerenciamento -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Processo de gerenciamento</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p>{{object.processo_gerenciamento|linebreaksbr }}</p>
+        
+                        </div>
+                      </div>      
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - Processo de gerenciamento -->                                
+
+
+                <!-- Ciclos de Vida -->
+                <div class="col-md-12"> 
+                  <div class="clearfix"></div>
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><i class="fa fa-align-left"></i> Ciclos de Vida</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>               
+                        </ul>
+                        <div class="clearfix"></div>
+
+                      </div>
+                    <div class="x_content">
+
+                      {% for fase in fases %}
+
+                      <div  role="tablist" aria-multiselectable="true">
+
+                        <div class="panel">
+                          <p class="title">{{ fase.nome_fase }}</p>
+                          <p>{{ fase.descricao }}</p>
+        
+                        </div>
+                      </div> 
+
+                      {% endfor %}     
+                    </div>  
+                  </div>
+
+                </div>
+                <!-- FIM - Ciclos de Vida -->   
+
+              </div>
+
+              <!-- start project-detail sidebar -->
+              <div class="col-md-3 col-sm-3 col-xs-12">
+
+                <section class="panel">
+
+                  <div class="x_title">
+                    <h2>Descrição do Projeto</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="panel-body">
+                    <h3 class="green"><i class="fa fa-paint-brush"></i> {{ object.nome }}</h3>
+
+                    <p>{% if object.descricao %}{{ object.descricao }}{%else%}-{%endif%}</p>
+                    <br />
+
+                    <p class="title"><strong>Escopo</strong></p>
+                    <p>{% if object.escopo %}{{ object.escopo }}{%else%}-{%endif%}</p>
+                    <br />                    
+
+                    <div class="project_detail">
+
+                      <p class="title">Empresa cliente</p>
+                      <p>{{object.empresa_cliente}}</p>
+                      <p class="title">Líder do Projeto</p>
+                      <p>{{ object.lider_projeto }}</p>
+                    </div>
+
+                    <br />
+                    <h5><strong>Instituição</strong> </h5>
+                    <ul class="list-unstyled project_files">
+                      <li>{{ object.instituicao.nome }}</li>
+                      <li>{{ object.instituicao.cidade }}, {{ object.instituicao.estado }}</li>
+                    
+                    <br />
+                    </ul>
+                    <h5><strong>Arquivos do Projeto</strong></h5>
+                    <ul class="list-unstyled project_files">
+       <!--                <li><a href="">{% if object.cronograma %}
+                        cronograma<a href="/media/{{object.cronograma}}" target="_blank">
+                          <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>                        
+                        </a>
+
+                        {% endif %}</a>                
+                      </li>
+ -->
+
+                      {% if object.cronograma %}
+                      <li>cronograma
+                        <a href="/media/{{object.cronograma}}"target="_blank">
+                          <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      {% endif %}
+                      {% if object.plano_comunicacao %}
+                      <li>plano_de_comunicacao
+                        <a href="/media/{{object.plano_comunicacao}}"target="_blank">
+                          <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>
+                        </a>
+                      </li>
+                      {% endif %}                      
+               
+                    </ul>                    
+                    <br />
+                    <h5><strong>Orçamento</strong></h5>
+                    <ul class="list-unstyled project_files">
+                      <li>Previsto: {{ object.orcamento_previsto|floatformat:2 }} R$</li>
+                      <li>Executado: {{ object.orcamento_executado|floatformat:2 }} R$</li>
+                    
+                    <br />
+                    </ul>                  
+                    <br />                    
+
+                    <div class="text-center mtop20">
+                      <a href="#" class="btn btn-sm btn-primary">Add files</a>
+                      <a href="#" class="btn btn-sm btn-warning">Report contact</a>
+                    </div>
+                  </div>
+
+                </section>
+
+              </div>
+              <!-- end project-detail sidebar -->
+
             </div>
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 {% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- ECharts -->
+  <script src="/static/vendors/echarts/dist/echarts.min.js"></script>
+{% endblock javascripts %}

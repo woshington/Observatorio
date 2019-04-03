@@ -1,0 +1,117 @@
+{% extends "app/base_site.html" %}
+{% load widget_tweaks %}
+{% block title %} {% if objetoct %}Editar{% else %}Adicionar {% endif %} Projeto {% endblock title %}
+
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Consultas<small>Orçamento Previsto</small></h2>
+     
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              
+    			<form action="{% url 'consultas:orcamento_maior_que' %}" class="form-group" method="get" enctype="multipart/form-data">{% csrf_token %}
+            {% for field in form %}
+   
+              <div class="col-md-11">
+              
+                <label class="control-label" >Procurar projetos orçamento previstos maiores que:</label>
+                {{ field|add_class:"form-control input-md" }}
+              
+
+              </div>
+
+        			<div class="col-md-1">
+        				<label class="control-label" > &nbsp;</label>
+        				<span class="input-group-btn">
+        				<button type="submit" class="btn btn-default form-control" title="Clique pesquisar">
+        					<i class="fa fa-search" aria-hidden="true"></i>
+        				</button>
+        				</span>
+
+        			</div>	                
+                
+            {% endfor %}
+
+            <div class="clearfix"></div>
+            <div class="ln_solid"></div>
+         
+
+         	 </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Projetos</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div id="listItems" class="x_content">
+
+              {% if consulta_lista > 0 %}
+              <table class="table table-striped projects">
+                <thead>
+                  <tr>
+                    <th style="width: 1%">#</th>
+                    <th style="width: 60%">Nome</th>
+                    <th style="width: 15%">Orçamento Previsto</th>
+                    <th style="width: 20%">#Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for objeto in consulta_lista %}
+                  <tr>
+                    <td>{{objeto.id}}</td>
+                    <td>                     
+                      {% if objeto.nome %} {{objeto.nome}} {% else %} - {% endif %}                      
+                    </td>
+                    <td>{{objeto.orcamento_previsto}}</td>                    
+
+   
+                    <td>
+                      <div class="cent">
+                        <a href="{% url 'projeto:objeto_detalhar' objeto.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Ver </a>
+                        <a href="{% url 'projeto:objeto_editar' objeto.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>   
+                       <a href="{% url 'projeto:objeto_deletar' objeto.id %}" class="btn btn-danger btn-xs">
+                          <i class="fa fa-trash-o">Deletar</i>
+                        </a>
+                        
+                      </div>
+                      
+
+                    </td>
+                  </tr>
+
+                {% endfor %}  
+                </tbody>
+              </table>
+              {% else %}
+              Sem itens na lista
+
+              {% endif %} 
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock content %}
+

@@ -14,7 +14,8 @@ from datetime import timedelta
 from django.dispatch import receiver
 from datetime import datetime
 from django.contrib import messages
-
+from django.forms.formsets import formset_factory
+from django.forms import modelformset_factory
 
 class FaseListar(ListView):
 	model = Fase
@@ -38,94 +39,6 @@ class FaseListar(ListView):
 		return context
 
 
-class FaseCriar(CreateView):
-	model = Fase
-	template_name = 'fase/add.html'
-	form_class = FaseForm
-
-
-class FaseDetalhar(UpdateView):
-	model = Fase
-	template_name = 'fase/detalhar.html'
-	form_class = FaseForm
-
-
-class FaseAtualizar(UpdateView):
-	model = Fase
-	template_name = 'fase/add.html'
-	form_class = FaseForm
-
-
-def fase_deletar(request, pk):
-	fase = get_object_or_404(Fase, pk=pk)
-	fase.delete()
-	return redirect('projeto:fase_listar')
-
-
-class FaseAutocomplete(autocomplete.Select2QuerySetView):
-	def get_queryset(self):
-		qs = Fase.objects.all()
-
-		if self.q:
-			qs = qs.filter(nome__icontains=self.q)
-
-		return qs
-
-
-class CicloVidaListar(ListView):
-	model = CicloVida
-	http_method_names = ['get']
-	template_name = 'ciclo_vida/listar.html'
-	context_object_name = 'object_list'
-	paginate_by = 20
-
-	def get_queryset(self):
-		self.queryset = super(CicloVidaListar, self).get_queryset()
-		if self.request.GET.get('search_box', False):
-			self.queryset=self.queryset.filter(Q(nome__icontains=self.request.GET['search_box']))
-		return self.queryset
-
-	def get_context_data(self, **kwargs):
-		_super = super(CicloVidaListar, self)
-		context = _super.get_context_data(**kwargs)
-	
-		context.update({
-			})
-		return context
-
-
-class CicloVidaCriar(CreateView):
-	model = CicloVida
-	template_name = 'ciclo_vida/add.html'
-	form_class = CicloVidaForm
-
-
-class CicloVidaDetalhar(UpdateView):
-	model = CicloVida
-	template_name = 'ciclo_vida/detalhar.html'
-	form_class = CicloVidaForm
-
-
-class CicloVidaAtualizar(UpdateView):
-	model = CicloVida
-	template_name = 'ciclo_vida/add.html'
-	form_class = CicloVidaForm
-
-
-def ciclo_vida_deletar(request, pk):
-	ciclo_vida = get_object_or_404(CicloVida, pk=pk)
-	ciclo_vida.delete()
-	return redirect('projeto:ciclo_vida_listar')
-
-
-class CicloVidaAutocomplete(autocomplete.Select2QuerySetView):
-	def get_queryset(self):
-		qs = CicloVida.objects.all()
-
-		if self.q:
-			qs = qs.filter(nome__icontains=self.q)
-
-		return qs
 
 
 class InstituicaoListar(ListView):
@@ -184,21 +97,21 @@ class InstituicaoAutocomplete(autocomplete.Select2QuerySetView):
 		return qs
 
 
-class MembroEquipeListar(ListView):
-	model = MembroEquipe
+class MembroListar(ListView):
+	model = Membro
 	http_method_names = ['get']
-	template_name = 'membro_equipe/listar.html'
+	template_name = 'membro/listar.html'
 	context_object_name = 'object_list'
 	paginate_by = 20
 
 	def get_queryset(self):
-		self.queryset = super(MembroEquipeListar, self).get_queryset()
+		self.queryset = super(MembroListar, self).get_queryset()
 		if self.request.GET.get('search_box', False):
 			self.queryset=self.queryset.filter(Q(nome__icontains=self.request.GET['search_box']))
 		return self.queryset
 
 	def get_context_data(self, **kwargs):
-		_super = super(MembroEquipeListar, self)
+		_super = super(MembroListar, self)
 		context = _super.get_context_data(**kwargs)
 	
 		context.update({
@@ -206,33 +119,33 @@ class MembroEquipeListar(ListView):
 		return context
 
 
-class MembroEquipeCriar(CreateView):
-	model = MembroEquipe
-	template_name = 'membro_equipe/add.html'
-	form_class = MembroEquipeForm
+class MembroCriar(CreateView):
+	model = Membro
+	template_name = 'membro/add.html'
+	form_class = MembroForm
 
 
-class MembroEquipeDetalhar(UpdateView):
-	model = MembroEquipe
-	template_name = 'membro_equipe/detalhar.html'
-	form_class = MembroEquipeForm
+class MembroDetalhar(UpdateView):
+	model = Membro
+	template_name = 'membro/detalhar.html'
+	form_class = MembroForm
 
 
-class MembroEquipeAtualizar(UpdateView):
-	model = MembroEquipe
-	template_name = 'membro_equipe/add.html'
-	form_class = MembroEquipeForm
+class MembroAtualizar(UpdateView):
+	model = Membro
+	template_name = 'membro/add.html'
+	form_class = MembroForm
 
 
-def membro_equipe_deletar(request, pk):
-	membroEquipe = get_object_or_404(MembroEquipe, pk=pk)
-	membroEquipe.delete()
-	return redirect('projeto:fase_listar')
+def membro_deletar(request, pk):
+	membro = get_object_or_404(Membro, pk=pk)
+	membro.delete()
+	return redirect('projeto:membro_listar')
 
 
-class MembroEquipeAutocomplete(autocomplete.Select2QuerySetView):
+class MembroAutocomplete(autocomplete.Select2QuerySetView):
 	def get_queryset(self):
-		qs = MembroEquipe.objects.all()
+		qs = Membro.objects.all()
 
 		if self.q:
 			qs = qs.filter(nome__icontains=self.q)
@@ -263,31 +176,182 @@ class ProjetoListar(ListView):
 
 
 class ProjetoCriar(CreateView):
-	model = Projeto
 	template_name = 'projeto/add.html'
+	models = Projeto
 	form_class = ProjetoForm
+	second_form_class = InstituicaoForm
+	third_form_class = MembroForm
 
 
-# class ProjetoDetalhar(UpdateView):
-# 	model = Projeto
-# 	template_name = 'projeto/detalhar.html'
-# 	form_class = ProjetoForm
+	def get(self, request, *args, **kwargs):
+		self.object = None
+		form = self.form_class
+		instituicao_form = self.second_form_class
+		membro_form = self.third_form_class
+
+		MembroFormset = modelformset_factory(Membro, form=MembroForm)
+		formset = MembroFormset(request.POST or None, queryset= Membro.objects.none(), prefix='membro')
+
+		# FaseFormset = modelformset_factory(Fase, form=FaseForm)		
+		# fase_formset = FaseFormset(request.POST or None, queryset= Fase.objects.none(), prefix='fase')
+
+		return self.render_to_response(
+			self.get_context_data(
+				form=form,
+				instituicao_form=instituicao_form,
+				membro_form=membro_form,
+				formset= formset,
+			)
+		)
+
+	def post(self, request, *args, **kwargs):
+		self.object = None
+		form = self.form_class(self.request.POST, self.request.FILES)
+		instituicao_form = self.second_form_class(self.request.POST)
+		
+		MembroFormset = modelformset_factory(Membro, form=MembroForm)
+		formset = MembroFormset(request.POST or None, queryset= Membro.objects.none(), prefix='membro')
+
+		# FaseFormset = modelformset_factory(Fase, form=FaseForm)		
+		# fase_formset = FaseFormset(request.POST or None, queryset= Fase.objects.none(), prefix='fase')
+
+		if form.is_valid() and instituicao_form.is_valid() and formset.is_valid():
+			return self.form_valid(form, instituicao_form, formset)
+		else:
+			return self.form_invalid(form, instituicao_form, formset)
+
+	def form_valid(self, form, instituicao_form, formset):
+
+		try:
+			with transaction.atomic():
+
+				instituicao = instituicao_form.save()				
+				projeto = form.save(commit=False)
+				projeto.instituicao = instituicao
+
+				projeto.save()
+
+				# Membros
+				for item in formset:
+					data = item.save(commit=False)
+					data.projeto = projeto
+					data.save()
+
+
+
+		except IntegrityError: #If the transaction failed
+			messages.error(
+				self.request, 'Ocorreu um erro ao salvar o projeto.')
+
+		# return HttpResponseRedirect(self.get_success_url())
+		return redirect('projeto:projeto_add_fase', pk=projeto.id)
+
+	def form_invalid(self, form, instituicao_form, formset):
+		return self.render_to_response(
+			self.get_context_data(
+					form=form,
+					instituicao_form=instituicao_form,
+					formset=formset,
+
+				)
+			)
+
+	def get_success_url(self):
+		return reverse('projeto:projeto_listar')
+
+
+
+class ProjetoCriarFases(CreateView):
+	template_name = 'projeto/add_fase.html'
+	models = Fase
+	form_class = FaseForm
+
+	def get(self, request, *args, **kwargs):
+		self.object = None
+		
+		FaseFormset = modelformset_factory(Fase, form=FaseForm)		
+		formset = FaseFormset(request.POST or None, queryset= Fase.objects.none(), prefix='fase')
+
+		return self.render_to_response(
+			self.get_context_data(
+				formset= formset
+			)
+		)
+
+	def post(self, request, *args, **kwargs):
+		self.object = None
+	
+		FaseFormset = modelformset_factory(Fase, form=FaseForm)		
+		formset = FaseFormset(request.POST or None, queryset= Fase.objects.none(), prefix='fase')
+
+		if formset.is_valid():
+			return self.form_valid(formset)
+		else:
+			return self.form_invalid(formset)
+
+	def form_valid(self, formset, **kwargs):
+
+		try:
+			with transaction.atomic():
+				
+				projeto = get_object_or_404(Projeto, pk=self.kwargs['pk'])
+				
+				# Fases
+				for item in formset:
+					data = item.save(commit=False)
+					data.projeto = projeto
+					data.save()
+
+
+
+		except IntegrityError: #If the transaction failed
+			messages.error(
+				self.request, 'Ocorreu um erro ao salvar o projeto.')
+
+		return HttpResponseRedirect(self.get_success_url())
+
+	def form_invalid(self, form, instituicao_form, formset):
+		return self.render_to_response(
+			self.get_context_data(
+					form=form,
+					instituicao_form=instituicao_form,
+					formset=formset,
+
+				)
+			)
+
+	def get_success_url(self):
+		return reverse('projeto:projeto_listar')
+
+
 
 class ProjetoDetalhar(DetailView):
 	model = Projeto
-	template_name = 'projeto/detalhar2.html'
+	template_name = 'projeto/detalhar.html'
+
+	def get_context_data(self, **kwargs):
+		_super = super(ProjetoDetalhar, self)
+		context = _super.get_context_data(**kwargs)
+		projeto = get_object_or_404(Projeto, pk=self.kwargs['pk'])
+	
+		context.update({
+			'membros': Membro.objects.filter(projeto = projeto),
+			'fases': Fase.objects.filter(projeto = projeto)
+
+			})
+		return context
 
 
 class ProjetoAtualizar(UpdateView):
 	model = Projeto
 	template_name = 'projeto/add.html'
-	form_class = ProjetoForm
+	form_class = ProjetoUpdateForm
 
 
 def projeto_deletar(request, pk):
 	projeto = get_object_or_404(Projeto, pk=pk)
 	projeto.delete()
-	return redirect('projeto:fase_listar')
+	return redirect('projeto:projeto_listar')
 
 
 class ProjetoAutocomplete(autocomplete.Select2QuerySetView):
@@ -300,4 +364,23 @@ class ProjetoAutocomplete(autocomplete.Select2QuerySetView):
 		return qs
 
 
-		
+def step1(request):    
+	form = ProjetoForm(request.POST or None)
+	if request.method == 'POST':
+		if form.is_valid():
+			projeto = form.save()
+			request.session['pk'] = projeto.id
+			return HttpResponseRedirect(reverse('projeto_add_step2'))
+	return render(request, 'projeto/step1.html', {'form': form})
+
+
+def step2(request):
+	form = InstituicaoForm(request.POST or None)
+	if request.method == 'POST':
+		if form.is_valid():
+			instituicao = form.save()
+			projeto = get_object_or_404(Projeto, pk=request.session['pk'])
+			projeto.instituicao=instituicao
+			projeto.save()
+			return HttpResponseRedirect(reverse('projeto:projeto_listar'))
+	return render(request, 'projeto/step2.html', {'form': form})
