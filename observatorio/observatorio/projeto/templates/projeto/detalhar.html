@@ -112,7 +112,10 @@
                 </div>
                 <!-- FIM - MEMBROS DA EQUIPE -->
 
+
+                
                 <!-- ESCOPO -->
+                {% if object.escopo %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -143,10 +146,11 @@
 
 
                 </div>
+                {% endif %}
                 <!-- FIM - ESCOPO -->
-
-
+                                
                 <!-- ATIVIDADES -->
+                {% if object.atividades %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -172,9 +176,12 @@
                   </div>
 
                 </div>
+                {% endif %}
                 <!-- FIM - ATIVIDADES -->
+                
 
                 <!-- PRODUTOS -->
+                {% if object.produtos %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -200,10 +207,12 @@
                   </div>
 
                 </div>
+                {% endif %}
                 <!-- FIM - PRODUTOS -->
 
 
                 <!-- RISCOS -->
+                {% if object.riscos %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -229,9 +238,12 @@
                   </div>
 
                 </div>
+                {% endif %}
                 <!-- FIM - RISCOS -->
 
+
                 <!-- FERRAMENTAS -->
+                {% if object.ferramentas %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -257,9 +269,11 @@
                   </div>
 
                 </div>
+                {% endif %}
                 <!-- FIM - FERRAMENTAS --> 
 
                 <!-- Processo de gerenciamento -->
+                {% if object.processo_gerenciamento %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -285,10 +299,12 @@
                   </div>
 
                 </div>
+                {% endif %}
                 <!-- FIM - Processo de gerenciamento -->                                
 
 
                 <!-- Ciclos de Vida -->
+                {% if fases.count > 0 %}
                 <div class="col-md-12"> 
                   <div class="clearfix"></div>
                     <div class="x_panel">
@@ -319,6 +335,7 @@
                   </div>
 
                 </div>
+                {% endif %}
                 <!-- FIM - Ciclos de Vida -->   
 
               </div>
@@ -360,14 +377,7 @@
                     </ul>
                     <h5><strong>Arquivos do Projeto</strong></h5>
                     <ul class="list-unstyled project_files">
-       <!--                <li><a href="">{% if object.cronograma %}
-                        cronograma<a href="/media/{{object.cronograma}}" target="_blank">
-                          <i class="fa fa-arrow-circle-down" aria-hidden="true"></i>                        
-                        </a>
-
-                        {% endif %}</a>                
-                      </li>
- -->
+                      
 
                       {% if object.cronograma %}
                       <li>cronograma
