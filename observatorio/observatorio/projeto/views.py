@@ -84,7 +84,7 @@ class InstituicaoAtualizar(UpdateView):
 def instituicao_deletar(request, pk):
 	instituicao = get_object_or_404(Instituicao, pk=pk)
 	instituicao.delete()
-	return redirect('projeto:instituicao_listar')
+	return JsonResponse({'msg': "Administrador excluido com sucesso!", 'code': "1"})
 
 
 class InstituicaoAutocomplete(autocomplete.Select2QuerySetView):
@@ -140,7 +140,7 @@ class MembroAtualizar(UpdateView):
 def membro_deletar(request, pk):
 	membro = get_object_or_404(Membro, pk=pk)
 	membro.delete()
-	return redirect('projeto:membro_listar')
+	return JsonResponse({'msg': "Administrador excluido com sucesso!", 'code': "1"})
 
 
 class MembroAutocomplete(autocomplete.Select2QuerySetView):
@@ -351,7 +351,7 @@ class ProjetoAtualizar(UpdateView):
 def projeto_deletar(request, pk):
 	projeto = get_object_or_404(Projeto, pk=pk)
 	projeto.delete()
-	return redirect('projeto:projeto_listar')
+	return JsonResponse({'msg': "Administrador excluido com sucesso!", 'code': "1"})
 
 
 class ProjetoAutocomplete(autocomplete.Select2QuerySetView):

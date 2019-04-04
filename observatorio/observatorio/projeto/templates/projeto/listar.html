@@ -75,9 +75,10 @@
                       <div class="cent">
                         <a href="{% url 'projeto:projeto_detalhar' object.id %}" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Ver </a>
                         <a href="{% url 'projeto:projeto_editar' object.id %}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Editar </a>   
-                       <a href="{% url 'projeto:projeto_deletar' object.id %}" class="btn btn-danger btn-xs">
+                       <a href="#" class="btn btn-danger btn-xs deleteItem" data-toggle="modal" data-id="{{ object.id }}">
                           <i class="fa fa-trash-o">Deletar</i>
                         </a>
+
                         
                       </div>
                       
@@ -104,6 +105,46 @@
 
 {% block javascripts %}
   {{ block.super }}
+  <script>
+  $('#listItems').on('click', '.deleteItem', function(e){
+    e.preventDefault();
+    var id = $( this ).attr("data-id"),
+    linha_editada = $(e.currentTarget).closest('tr');
+    token = "{{csrf_token}}";
+      // verifico o protocolo
+    if (window.location.protocol == 'http:') {
+      urlDel = "http://{{ request.get_host }}/projeto/"+ id +"/deletar";
+    }else{
+      urlDel = "https://{{ request.get_host }}/projeto/"+ id +"/deletar";
+    }
+    swal({
+      title: "Deletar Permanentemente!",
+      text: "Deseja realmente deletar?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "SIM",
+      cancelButtonText: "CANCELAR",
+      closeOnConfirm: false
+    }, function(){
+      //window.location.href = "http://localhost/ce/public/admin/gerenciarbanco/delete/"+id;
+      $.ajax({
+        url: urlDel,
+        type: 'get',
+        //data: { csrfmiddlewaretoken: token },
+      })
+      .done(function(d){
+        if ( d.code == 1 ){
+          swal('Excluido!','Excluido com sucesso!',"success");
+          linha_editada.hide();
+        }
+      })
+      .fail(function(f){
+        swal('Falha!','Erro ao excluir!',"error");
+      });
+    });
+  });
+  </script>
 
 
 {% endblock javascripts %}
